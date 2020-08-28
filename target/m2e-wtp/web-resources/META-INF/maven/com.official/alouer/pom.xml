@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.official</groupId>
+	<artifactId>alouer</artifactId>
+	<name>aLouer</name>
+	<packaging>war</packaging>
+	<version>1.0.0-BUILD-SNAPSHOT</version>
+	<properties>
+		<java-version>1.6</java-version>
+		<org.springframework-version>4.3.27.RELEASE</org.springframework-version>
+		<org.aspectj-version>1.6.10</org.aspectj-version>
+		<org.slf4j-version>1.6.6</org.slf4j-version>
+         <org.apache.tiles-version>3.0.8</org.apache.tiles-version>
+	</properties>
+	
+	
+	<!--오라클 JDBC 원격 레파지토리(저장소)  -->
+	<repositories>
+		<repository>
+			<id>oracle</id>
+			<name>ORACLE JDBC Repository</name>
+			<url>https://code.lds.org/nexus/content/groups/main-repo</url>
+		</repository>
+	</repositories>	
+
+	<dependencies>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				 </exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+				
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>	
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.15</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jdmk</groupId>
+					<artifactId>jmxtools</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jmx</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- @Inject -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+				
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+	
+		<!-- Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>   
+		
+		
+		
+		
+		<!--ojdbc6(오라클드라이버)의존설정  -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.3</version>
+		</dependency>
+		<!--spring jdbc(JDBCTemplate)를 사용하기위한 의존설정  -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>4.1.4.RELEASE</version>
+		</dependency>
+		 
+		
+		<!-- Mybatis 의존설정 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		
+		      
+		
+		<!-- JSON을 사용하기 위한 의존설정 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.1</version>
+		</dependency>
+		
+		
+		
+		<!--Spring Security 의존설정  -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			 <version>4.2.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			 <version>4.2.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			 <version>4.2.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>4.2.1.RELEASE</version>
+		</dependency>
+	
+	<!--lomBok (Build Pattern 의존설정  
+		설명 : 
+		https://o365kongju-my.sharepoint.com/personal/200701595_smail_kongju_ac_kr/_layouts/15/Doc.aspx?sourcedoc={1451613f-a7e9-419e-a2f1-d16cdbdf1ad1}&action=view&wd=target%28%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC.one%7C65b6c569-52d2-4683-b7f4-d384cd84a53e%2FSpring-lomBok%20%2C%20Builder%20Pattern%7C8343d332-062f-4c0c-ba2b-0ee3773b7a6e%2F%29
+	-->
+	<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.16.22</version>
+		<scope>provided</scope>
+	</dependency>   
+	
+	
+	<!-- 셀레니움 웹드라이버 -->
+	    <dependency>
+	        <groupId>org.seleniumhq.selenium</groupId>
+	        <artifactId>selenium-java</artifactId>
+	        <version>3.141.59</version>
+	    </dependency> 
+	    
+	    <!-- Jsoup -->
+	    <dependency>
+		  <!-- jsoup HTML parser library @ https://jsoup.org/ -->
+		  <groupId>org.jsoup</groupId>
+		  <artifactId>jsoup</artifactId>
+		  <version>1.13.1</version>
+		</dependency>
+	    		
+	    
+	    <!-- HTMLUnit -->
+		<dependency>
+		    <groupId>net.sourceforge.htmlunit</groupId>
+		    <artifactId>htmlunit</artifactId>
+		    <version>2.39.1</version>
+		</dependency>
+	    
+	    <!-- 크롤링용 드라이버 -->
+	    
+		<!-- selenium-HtmlUnit-driver -->
+	   <dependency>
+	     <groupId>org.seleniumhq.selenium</groupId>
+	     <artifactId>htmlunit-driver</artifactId>
+	     <version>2.33.2</version>
+	 	</dependency>
+		
+		
+		<!-- selenium base64encoder -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-common</artifactId>
+			<version>2.0b1</version>
+		</dependency>
+		
+		
+
+        <!-- Tiles -->
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-servlet</artifactId>
+            <version>${org.apache.tiles-version}</version>
+        </dependency>
+         <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-api</artifactId>
+            <version>${org.apache.tiles-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
+            <version>${org.apache.tiles-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-core</artifactId>
+            <version>${org.apache.tiles-version}</version>
+        </dependency> 
+        <dependency>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-template</artifactId>
+            <version>${org.apache.tiles-version}</version>
+        </dependency> 
+	
+	
+	<!-- javax.mail.internet.MimeMessage-->
+	<dependency>
+         <groupId>javax.mail</groupId>
+         <artifactId>mail</artifactId>
+         <version>1.4.7</version>
+      </dependency>	
+	<!-- 이메일전용(JavaMailSender) -->
+	<dependency> 
+		<groupId>org.springframework</groupId> 
+		<artifactId>spring-context-support</artifactId> 
+		<version>${org.springframework-version}</version> 
+	</dependency>
+
+	
+
+	 
+	  <!-- Java Mail API -->
+	  <dependency>
+	    <groupId>javax.mail</groupId>
+	    <artifactId>mail</artifactId>
+	    <version>1.4.3</version>
+	  </dependency>
+	
+		 <!-- httpcore(카카오) -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.6</version>
+        </dependency>
+ 
+        <!-- httpclient(카카오) -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+
+
+
+
+
+	<!-- OAuth2 Login : 유재영 -->
+	<!--  
+
+	<dependency>
+		<groupId>com.github.scribejava</groupId>
+		<artifactId>scribejava-apis</artifactId>
+		<version>5.6.0</version>
+	</dependency>
+	<dependency>
+		<groupId>com.github.scribejava</groupId>
+		<artifactId>scribejava-core</artifactId>
+		<version>5.6.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.social</groupId>
+		<artifactId>spring-social-google</artifactId>
+		<version>1.0.0.RELEASE</version>
+	</dependency> -->
+
+	
+	
+	<!-- 파일 업로드를 위한 의존설정 -->
+	<dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0.1</version>
+         </dependency>
+         <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+    </dependency>
+	
+	
+	
+	</dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>org.test.int1.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
