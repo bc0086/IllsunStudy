@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
-
+  
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
  	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -10,7 +10,7 @@
         <property name="url" value="jdbc:oracle:thin:@192.168.0.5:1521:XE"/>
         <property name="username" value="giantstudy"/>
         <property name="password" value="gs123"/>
-    </bean>
+    </bean>    
 
 <!--  	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> -->
 <!--         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> -->
