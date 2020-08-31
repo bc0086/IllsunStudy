@@ -52,11 +52,6 @@ $(function(){
 		}
 	})
 	
-	
-	
-	
-	
-	
 	$("#deleteBtn2").click(function(){
 		var cnt = $("input[name='checkbox']:checked").length;
 		if(cnt==0){
@@ -66,15 +61,47 @@ $(function(){
 			$("#listFrm").attr("action", "delete2.do").attr("method", "post").submit();
 		}
 	})
+	
+	$("#searchBtn").click(function(){
+		var choice = $('#search_option').val();
+		if(choice == 'non_action'){
+			alert("검색유형을 선택해주세요.");
+			return false;
+		}
+		else {
+			$("#searchFrm").attr("action", "list").attr("method", "get").submit();			
+		}
+		
+	})
+		
+	
+	
 });
 
 </script>
 </head>
 <body>
+<form id="searchFrm" name="searchFrm">
+<!-- 
+		검색기능 
+		- 컨트롤러의 list.do로 맵핑되고, user_id, title, content값을 매개값으로 넘긴다.
+		- 검색옵션은 작성자, 제목, 내용, 작성자+제목+내용으로 검색할 수 있도록 한다.	
+	-->
+	<select name="search_option" id="search_option">
+		<option value="non_action" >선택</option>
+		<option value="MEM_NAME">	작성자</option>
+		<option value="BOARD_SUBJECT"> 제목</option>
+		<option value="BOARD_CONTENT" >제목 + 내용</option>		
+	</select>
+	
+	<input type="text" id="keyword" name="keyword" value="${keyword}"/>
+	<input type="submit" id="searchBtn" name="searchBtn" value="검색">
+</form>
+
 <form id=listFrm name=listFrm>
 	<a href="${pageContext.request.contextPath}/write"><button>글쓰기</button></a>	
 	<button id="deleteBtn1" name="deleteBtn1">삭제1</button>
-	<button id="deleteBtn2" name="deleteBtn2">삭제2</button>
+	<button id="deleteBtn2" name="deleteBtn2">삭제2</button><br /><br />
 	
 	<table border="1" style="margin: 10px">
 		<tr>

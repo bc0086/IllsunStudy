@@ -25,6 +25,13 @@
 			, upt_date
 			, view_cnt
 		 from board_study
+		 
+		 <if test="keyword != null and !keyword.equals('')">
+			 WHERE ${search_option } LIKE '%'||#{keyword }||'%'
+			 <if test="search_option.equals('BOARD_CONTENT')">
+			 	or BOARD_SUBJECT LIKE '%'||#{keyword }||'%'
+			 </if>
+		 </if>
 		 order by seq desc
 	</select>
 

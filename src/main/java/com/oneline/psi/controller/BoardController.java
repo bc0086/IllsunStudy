@@ -29,12 +29,18 @@ public class BoardController {
 	private BoardService boardService;
 	
 	
-	@RequestMapping("list")
-	public String list(Map<String, Object> map, Model model) {
-		
+	@RequestMapping("list") // 세부적인 url mapping
+	public String list(@RequestParam Map<String, Object> map, Model model) {
+	
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		list = boardService.list(map);
-		model.addAttribute("list", list);
+		model.addAttribute("list", list); // 데이터를 저장
+		
+		
+		model.addAttribute("map", map);
+		
+		System.out.println(map);
+			
 		return "board/list";
 	}
 	
