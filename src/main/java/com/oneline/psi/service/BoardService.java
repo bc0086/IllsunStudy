@@ -19,6 +19,9 @@ public interface BoardService {
 
 	int delete2(List<Integer> list);
 
+	int totalCount(Map<String, Object> map);
+
+
 
 
 

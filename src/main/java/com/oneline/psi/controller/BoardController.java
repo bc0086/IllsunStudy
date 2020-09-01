@@ -2,6 +2,7 @@ package com.oneline.psi.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,19 +32,78 @@ public class BoardController {
 	
 	@RequestMapping("list") // 세부적인 url mapping
 	public String list(@RequestParam Map<String, Object> map, Model model) {
-	
+		
+		
+		
+		if(map.isEmpty()) {
+			map.put("pageNo", 1);
+			map.put("listSize", 10);
+		}
+		
+		
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		list = boardService.list(map);
+		
+		// 전체 게시물 갯수
+		int total = boardService.totalCount(map);
+		// 현재 페이지
+		int curPage = Integer.parseInt(map.get("pageNo").toString());
+		// 게시물 크기
+		int listSize = Integer.parseInt(map.get("listSize").toString());
+		// 위에서 만든  변수들을 하나의 맵으로 묶음.
+		Map<String, Object> pageMap = pageMap(curPage, total, listSize);
+		
 		model.addAttribute("list", list); // 데이터를 저장
+		model.addAttribute("pageMap", pageMap); // 데이터를 저장
 		
 		
-		model.addAttribute("map", map);
+		String keyword = (String)map.get("keyword");
+		model.addAttribute("keyword", keyword );
+		String search_option = (String)map.get("search_option");
+		model.addAttribute("search_option", search_option);
+		String start_date = (String)map.get("start_date");
+		model.addAttribute("start_date", start_date);
+		String end_date = (String)map.get("end_date");
+		model.addAttribute("end_date", end_date);
+		System.out.println(end_date);
+		
+		
+		
+		
+		
+		
 		
 		System.out.println(map);
 			
 		return "board/list";
 	}
 	
+	public Map<String, Object> pageMap(int curPage, int count, int listSize) {
+		int BLOCK_SCALE = 7;
+		int totPage = (int) Math.ceil(count*1.0 / listSize);
+		int totBlock = (int) Math.ceil(totPage / BLOCK_SCALE);
+		int curBlock = (int) Math.ceil((curPage-1) / BLOCK_SCALE)+1;
+		int blockBegin = (curBlock-1)*BLOCK_SCALE+1;
+		int blockEnd = blockBegin+BLOCK_SCALE-1;
+		if(blockEnd > totPage) blockEnd = totPage;
+		int prevPage = (curPage == 1)? 1:(curBlock-1)*BLOCK_SCALE;
+        int nextPage = curBlock > totBlock ? (curBlock*BLOCK_SCALE) : (curBlock*BLOCK_SCALE)+1;
+        if(nextPage >= totPage) nextPage = totPage;
+        
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("totBlock", totBlock);
+        map.put("curBlock", curBlock);
+        map.put("blockBegin", blockBegin);
+        map.put("blockEnd", blockEnd);
+        map.put("prevPage", prevPage);
+        map.put("nextPage", nextPage);
+        map.put("curPage", curPage);
+        map.put("totPage", totPage);
+        map.put("BLOCK_SCALE", BLOCK_SCALE);
+		
+		return map;
+	}
+
 	//글쓰기 버튼 눌렀을 때 
 	@RequestMapping("write")
 	public String write() {

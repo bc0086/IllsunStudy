@@ -15,6 +15,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.5.1.min.js"></script>
+
+<!-- datepicker -->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>  
+<!-- /datepicker -->
 <script>
 $(function(){
 	$("#deleteBtn1").click(function(){
@@ -63,39 +69,69 @@ $(function(){
 	})
 	
 	$("#searchBtn").click(function(){
-		var choice = $('#search_option').val();
+		 var choice = $('#search_option').val();
 		if(choice == 'non_action'){
 			alert("검색유형을 선택해주세요.");
 			return false;
 		}
-		else {
-			$("#searchFrm").attr("action", "list").attr("method", "get").submit();			
-		}
-		
+		else { 
+			$("#searchFrm").attr({"action":"list", "method" : "get"}).submit();			
+		 } 
 	})
-		
 	
+	$( "#start_date, #end_date" ).datepicker({
+		dateFormat: 'yy-mm-dd' //Input Display Format 변경
+            ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+            ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
+            ,changeYear: true //콤보박스에서 년 선택 가능
+            ,changeMonth: true //콤보박스에서 월 선택 가능                
+            ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+            ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+            ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
+            ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
+            ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
+            ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
+            ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
+            ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
+            ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
+            ,minDate: "-10Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+            ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후) 
+	});
+
+
 	
 });
-
+function goPage(num){
+	$("#pageNo").val(num);
+	$("#searchBtn").click();
+}
 </script>
 </head>
 <body>
 <form id="searchFrm" name="searchFrm">
-<!-- 
+	<input type="hid-den" name="pageNo" id="pageNo" value="1">
+	<input type="hid-den" name="listSize" id="listSize" value="10">
+	<!-- 
 		검색기능 
-		- 컨트롤러의 list.do로 맵핑되고, user_id, title, content값을 매개값으로 넘긴다.
+		- 컨트롤러의 list.do로 맵핑되고, mem_name, board_subject, board_content값을 매개값으로 넘긴다.
 		- 검색옵션은 작성자, 제목, 내용, 작성자+제목+내용으로 검색할 수 있도록 한다.	
 	-->
-	<select name="search_option" id="search_option">
+	<select name="search_option" id="search_option" >
 		<option value="non_action" >선택</option>
-		<option value="MEM_NAME">	작성자</option>
-		<option value="BOARD_SUBJECT"> 제목</option>
+		<option value="MEM_NAME" >	작성자</option>
+		<option value="BOARD_SUBJECT" > 제목</option>
 		<option value="BOARD_CONTENT" >제목 + 내용</option>		
 	</select>
-	
 	<input type="text" id="keyword" name="keyword" value="${keyword}"/>
 	<input type="submit" id="searchBtn" name="searchBtn" value="검색">
+	<!-- input type="date" name="stDate"도 달력이 된다. -->
+	<br /><br />
+	<!-- datepicker -->
+	<p>조회기간 : 
+		<input type="text" id="start_date" name="start_date" value="${start_date }" />
+		~
+		<input type="text" id="end_date" name="end_date" value="${end_date }"  />
+	</p>
 </form>
 
 <form id=listFrm name=listFrm>
@@ -125,6 +161,45 @@ $(function(){
 				<td>${list.viewCnt }</td> 
 			</tr>		
 		</c:forEach> 
+		
+			<tr>
+				<td colspan="7">
+					<c:if test="${pageMap.curBlock > 1}">
+	                    <a href="javascript:goPage('1')">[처음]</a>
+	                </c:if>
+	                
+	                <!-- **이전페이지 블록으로 이동 : 현재 페이지 블럭이 1보다 크면 [이전]하이퍼링크를 화면에 출력 -->
+	                <c:if test="${pageMap.curBlock > 1}">
+	                    <a href="javascript:goPage('${pageMap.prevPage}')">[이전]</a>
+	                </c:if>
+	                
+	                <!-- **하나의 블럭에서 반복문 수행 시작페이지부터 끝페이지까지 -->
+	                <c:forEach var="num" begin="${pageMap.blockBegin}" end="${pageMap.blockEnd}">
+	                    <!-- **현재페이지이면 하이퍼링크 제거 -->
+	                    <c:choose>
+	                        <c:when test="${num == pageMap.curPage}">
+	                            <span style="color: red">${num}</span>&nbsp;
+	                        </c:when>
+	                        <c:otherwise>
+	                            <a href="javascript:goPage('${num}')">${num}</a>&nbsp;
+	                        </c:otherwise>
+	                    </c:choose>
+	                </c:forEach>
+	                
+	                <!-- **다음페이지 블록으로 이동 : 현재 페이지 블럭이 전체 페이지 블럭보다 작거나 같으면 [다음]하이퍼링크를 화면에 출력 -->
+	                <c:if test="${pageMap.curBlock <= pageMap.totBlock}">
+	                    <a href="javascript:goPage('${pageMap.nextPage}')">[다음]</a>
+	                </c:if>
+	                
+	                <!-- **끝페이지로 이동 : 현재 페이지가 전체 페이지보다 작거나 같으면 [끝]하이퍼링크를 화면에 출력 -->
+	                <c:if test="${pageMap.curPage <= pageMap.totPage}">
+	                    <a href="javascript:goPage('${pageMap.totPage}')">[끝]</a>
+	                </c:if>
+				</td>
+			</tr>
+		
+		
+		
 	</table>
 </form>
 </body>

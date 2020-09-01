@@ -53,6 +53,12 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSession.delete("mapper.delete2", list);
 	}
 
+	@Override
+	public int totalCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("mapper.total", map);
+	}
+
 	
 
 

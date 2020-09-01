@@ -14,8 +14,9 @@
 	</resultMap>
 	
 	<!-- 게시판 리스트 -->
-	<select id="list" parameterType="map" resultMap="mapList">
+	<!--  <select id="list" parameterType="map" resultMap="mapList">
 		select
+			rnum
 			seq
 			, mem_id
 			, mem_name
@@ -25,15 +26,87 @@
 			, upt_date
 			, view_cnt
 		 from board_study
-		 
+		 where 1=1
 		 <if test="keyword != null and !keyword.equals('')">
-			 WHERE ${search_option } LIKE '%'||#{keyword }||'%'
+			 and ${search_option } LIKE '%'||#{keyword }||'%'
 			 <if test="search_option.equals('BOARD_CONTENT')">
-			 	or BOARD_SUBJECT LIKE '%'||#{keyword }||'%'
+			  and ( BOARD_CONTENT LIKE '%'||#{keyword }||'%'
+			 	or BOARD_SUBJECT LIKE '%'||#{keyword }||'%' )
 			 </if>
 		 </if>
+		 <if test = "start_date != null and start_date.equals('')">
+			 and reg_date between #{start_date} and #{end_date}
+		 </if>
+		 
 		 order by seq desc
 	</select>
+	-->
+	<select id="list" parameterType="map" resultMap="mapList">
+		select 
+			rnum
+			,seq
+			,mem_id
+			,mem_name
+			,board_subject
+			,board_content
+			,reg_date
+			,upt_date
+			,view_cnt
+		from (
+				select
+					row_number() over(order by seq desc) rnum
+					,seq
+					,mem_id
+					,mem_name
+					,board_subject
+					,board_content
+					,reg_date
+					,upt_date
+					,view_cnt
+				from board_study
+				where 1=1
+				<choose>
+			<when test="search_option == 'MEM_NAME'">
+				and MEM_NAME like '%${keyword}%'
+			</when>
+			<when test="search_option == 'BOARD_SUBJECT'">
+				and BOARD_SUBJECT like '%'||#{keyword}||'%'
+			</when>
+			<when test="search_option == 'BOARD_CONTENT'">
+				and (BOARD_SUBJECT like '%'||#{keyword}||'%'
+					or BOARD_CONTENT like '%'||#{keyword}||'%')
+			</when>
+		</choose>
+		
+		<if test="start_date != null and start_date != ''">
+			and reg_date between #{start_date} and #{end_date}
+		</if>
+		)where rnum between (#{pageNo}-1)*#{listSize}+1 and #{pageNo} * #{listSize}
+	</select>
+	
+	<select id="total" resultType="integer" parameterType="map">
+		select count(seq)
+		from board_study
+		where 1=1
+		<choose>
+			<when test="search_option == 'MEM_NAME'">
+				and MEM_NAME like '%${keyword}%'
+			</when>
+			<when test="search_option == 'BOARD_SUBJECT'">
+				and BOARD_SUBJECT like '%'||#{keyword}||'%'
+			</when>
+			<when test="search_option == 'BOARD_CONTENT'">
+				and (BOARD_SUBJECT like '%'||#{keyword}||'%'
+					or BOARD_CONTENT like '%'||#{keyword}||'%')
+			</when>
+		</choose>
+		
+		<if test="start_date != null and start_date != ''">
+			and reg_date between #{start_date} and #{end_date}
+		</if>
+	</select>
+	
+	
 
 	<!-- 글쓰기 -->
 	<insert id="writeAction" >
@@ -111,5 +184,6 @@
 		#{checkbox.value }
 		</foreach>
 	</delete>
+	
 
 </mapper>
