@@ -69,14 +69,28 @@ $(function(){
 	})
 	
 	$("#searchBtn").click(function(){
-		 var choice = $('#search_option').val();
+		/*  var choice = $('#search_option').val();
 		if(choice == 'non_action'){
 			alert("검색유형을 선택해주세요.");
 			return false;
 		}
-		else { 
-			$("#searchFrm").attr({"action":"list", "method" : "get"}).submit();			
-		 } 
+		else {  */
+			/* $("#searchFrm").attr({"action":"list", "method" : "get"}).submit(); */
+			$.ajax({
+				url : "searchList",
+				data : $("#searchFrm").serialize(), 
+				//serialize : 키값이 name이 된다.
+				type : "post",
+				success : function(data){
+					alert("ajax성공");
+					$("#listFrm").html(data);
+				},
+				error : function(){
+					alert("ajax실패");
+				}
+			}) 
+			
+		 /* }  */
 	})
 	
 	$( "#start_date, #end_date" ).datepicker({
@@ -108,9 +122,11 @@ function goPage(num){
 </script>
 </head>
 <body>
+<a href="uploadList"><button>업로드리스트</button></a><br /><br />
+
 <form id="searchFrm" name="searchFrm">
-	<input type="hid-den" name="pageNo" id="pageNo" value="1">
-	<input type="hid-den" name="listSize" id="listSize" value="10">
+	<input type="hidden" name="pageNo" id="pageNo" value="1">
+	<input type="hidden" name="listSize" id="listSize" value="10">
 	<!-- 
 		검색기능 
 		- 컨트롤러의 list.do로 맵핑되고, mem_name, board_subject, board_content값을 매개값으로 넘긴다.
@@ -135,7 +151,9 @@ function goPage(num){
 </form>
 
 <form id=listFrm name=listFrm>
-	<a href="${pageContext.request.contextPath}/write"><button>글쓰기</button></a>	
+<%-- 	<a href="${pageContext.request.contextPath}/write"><button>글쓰기</button></a>	 --%>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/write'">글쓰기</button>	
+	<!-- form으로 감싸면 잘되던 a태그도 안먹힌다. 그럴때는 button타입으로 onclick=location.href를 사용해라. -->
 	<button id="deleteBtn1" name="deleteBtn1">삭제1</button>
 	<button id="deleteBtn2" name="deleteBtn2">삭제2</button><br /><br />
 	

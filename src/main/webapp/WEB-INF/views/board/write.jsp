@@ -17,7 +17,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.5.1.min.js"></script>
 <script>
 $(function(){
-
+	/* var f = document.getElementById("frm"); */
         $("#inserBtn").click(function(){
     
     		if ($('#memId').val()==""){
@@ -40,8 +40,21 @@ $(function(){
     			$('#boardContent').focus();
  				return false;	
  			}
+    		
+    		/* if (f.btype.value == "4") {
+				var image = f.ofile.value;
+				var idx = image.lastIndexOf(".");
+				console.log(idx);
+				var ext = image.substring(idx, image.length);
+				console.log(ext);
+				var images_ext = [ '.jpg', '.png', '.gif', '.jpeg', ];
+				if (images_ext.indexOf(ext) == -1) {
+					alert("사진파일이 아닙니다.")
+					return false;
+				}
+			} */
         	
-        	$("#frm").attr("action", "writeAction.do").attr("method", "post").submit();
+        	$("#frm").attr("action", "writeAction.do").attr("method", "post").attr("enctype", "multipart/form-data").submit();
         })
         
         $("#updateBtn").click(function(){
@@ -81,7 +94,7 @@ $(function(){
 		작성자 : <input type="text" name="memName" id="memName" value="${detail.memName }" /><br/>
 		제목 : <input type="text" name="boardSubject" id="boardSubject" value="${detail.boardSubject }"/><br/>
 		내용 : <textarea name="boardContent" id="boardContent" value="">${detail.boardContent }</textarea><br/>
-		
+		첨부파일 : <input type="file" name="userfile1" multiple="multiple" />
 		<c:if test="${empty detail}">
 	 		<button id="inserBtn" >등록</button>&nbsp;
 		</c:if>
@@ -89,9 +102,7 @@ $(function(){
 	 		<button id="updateBtn" >수정</button>&nbsp;
 		</c:if>
 			<button type="button" id="cancel" onclick="location.href='${pageContext.request.contextPath}/list'" >취소</button>
-			
-	</form>	
-	
+	</form>		
 	
 </body>
 </html>
