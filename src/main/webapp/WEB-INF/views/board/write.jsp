@@ -17,7 +17,9 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.5.1.min.js"></script>
 <script>
 $(function(){
-	/* var f = document.getElementById("frm"); */
+	var f = document.getElementById("frm");
+	
+		// 글쓰기 등록 버튼
         $("#inserBtn").click(function(){
     
     		if ($('#memId').val()==""){
@@ -40,23 +42,11 @@ $(function(){
     			$('#boardContent').focus();
  				return false;	
  			}
-    		
-    		/* if (f.btype.value == "4") {
-				var image = f.ofile.value;
-				var idx = image.lastIndexOf(".");
-				console.log(idx);
-				var ext = image.substring(idx, image.length);
-				console.log(ext);
-				var images_ext = [ '.jpg', '.png', '.gif', '.jpeg', ];
-				if (images_ext.indexOf(ext) == -1) {
-					alert("사진파일이 아닙니다.")
-					return false;
-				}
-			} */
         	
         	$("#frm").attr("action", "writeAction.do").attr("method", "post").attr("enctype", "multipart/form-data").submit();
         })
         
+        // 글수정 버튼
         $("#updateBtn").click(function(){
         	
     		if ($('#memId').val()==""){
@@ -82,19 +72,45 @@ $(function(){
     		
         	$("#frm").attr("action", "editAction.do").attr("method", "post").submit();
         })
-       
 });
+
+// 업로드 유효성검사
+function fncImageChk(fileInput){
+	
+	var reg = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
+	if(!reg.test(fileInput.value)){
+		alert('이미지 올리시오');
+		fileInput.value = "";
+	}
+	
+	var file = fileInput.files[0];
+	var _URL = window.URL || window.webkitURL;
+		// webkit : url을 읽어오는 방법
+	var img = new Image();
+	
+	img.src = _URL.createObjectURL(file);
+	img.onload = function() {
+		
+		if(img.width > 300 || img.height > 300){
+			alert("사이즈 확인하시요");
+			fileInput.value = "";
+		}
+	}
+}
 </script>
 </head>
 <body>
-
 	<form name="frm" id="frm" >
 	<input type="hidden" name="seq" id="seq" value="${detail.seq }" />
 		아이디 : <input type="text" name="memId" id="memId" value="${detail.memId }"/><br/>
 		작성자 : <input type="text" name="memName" id="memName" value="${detail.memName }" /><br/>
 		제목 : <input type="text" name="boardSubject" id="boardSubject" value="${detail.boardSubject }"/><br/>
 		내용 : <textarea name="boardContent" id="boardContent" value="">${detail.boardContent }</textarea><br/>
-		첨부파일 : <input type="file" name="userfile1" multiple="multiple" />
+		
+		첨부파일1 : <input type="file" name="userfile1" id="userfile1" onchange="fncImageChk(this)" />
+		첨부파일2 : <input type="file" name="userfile2" id="userfile2" onchange="fncImageChk(this)" />
+		첨부파일3 : <input type="file" name="userfile3" id="userfile3" onchange="fncImageChk(this)" /> 
+		
 		<c:if test="${empty detail}">
 	 		<button id="inserBtn" >등록</button>&nbsp;
 		</c:if>

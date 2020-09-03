@@ -111,10 +111,10 @@ $(function(){
             ,minDate: "-10Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
             ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후) 
 	});
-
-
 	
 });
+
+// 페이징 처리
 function goPage(num){
 	$("#pageNo").val(num);
 	$("#searchBtn").click();
@@ -123,6 +123,19 @@ function goPage(num){
 </head>
 <body>
 <a href="uploadList"><button>업로드리스트</button></a><br /><br />
+<a href = "fileDown?saveName=1599132950304_7eleven.jpg&realName=7eleven.jpg">7eleven.png 다운로드</a>
+
+<!-- 업로드 다른방법 : 리스트화면 -->
+<form name = "frm1" id = "frm1" enctype="multipart/form-data" method = "post" action = "fileUpload1">
+	<table border="1">
+		<th>
+			<input type = "file" name = "txt1" id = "txt1" onchange="fncImageChk(this)">
+			<input type = "file" name = "txt2" id = "txt2" onchange="fncImageChk(this)">
+			<input type = "file" name = "txt3" id = "txt3" onchange="fncImageChk(this)"><br /><br />
+			<input type = "submit" name = "btn" id = "btn" value = "업로드버튼">
+		</th>
+	</table>
+</form><br /><br />
 
 <form id="searchFrm" name="searchFrm">
 	<input type="hidden" name="pageNo" id="pageNo" value="1">
@@ -215,8 +228,6 @@ function goPage(num){
 	                </c:if>
 				</td>
 			</tr>
-		
-		
 		
 	</table>
 </form>
