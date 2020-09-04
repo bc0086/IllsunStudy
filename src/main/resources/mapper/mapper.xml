@@ -184,4 +184,18 @@
 		#{checkbox.value }
 		</foreach>
 	</delete>
+	
+	<!-- 엑셀다운로드 -->
+	<select id="excelDown" parameterType="map" resultMap="mapList">
+		select
+			seq
+			,mem_id
+			,mem_name
+			,board_subject
+			,board_content
+			,reg_date
+			,upt_date
+			,view_cnt
+		from board_study
+	</select>
 </mapper>

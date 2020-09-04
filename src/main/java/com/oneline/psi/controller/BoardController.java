@@ -22,14 +22,15 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.oneline.psi.BoardVO;
 import com.oneline.psi.service.BoardService;
 
 @Controller
@@ -370,13 +371,15 @@ public class BoardController {
 	    boolean skip = false;
 	    String client = "";
 	 
+	    
+	   
 	    try{
 	 
 	        // 파일을 읽어 스트림에 담기
 	        try{
 	            file = new File(filePath, saveName);
 	            System.out.println("before stram file=" + file);
-	            in = new FileInputStream(file);	           
+	            in = new FileInputStream(file);
 	            System.out.println("stream in =" + in);
 	        }catch(FileNotFoundException fe){
 	            skip = true;
@@ -416,7 +419,7 @@ public class BoardController {
 	            response.setContentType("text/html;charset=UTF-8");
 	        }
 	         
-			/* in.close(); */
+			in.close();
 	        os.close();
 	        System.out.println("성공");
 	 
@@ -425,10 +428,31 @@ public class BoardController {
 	      System.out.println("실패");
 	    }
 
-
 	}
 
+	@RequestMapping("excelDown")
+	public String excelDown(Model model, @RequestParam Map<String, Object> map) {
+		
+		 List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		 System.out.println(list); 
+		 
+		 list = boardService.excelDown(map);
+		 System.out.println(list); 
+		 model.addAttribute("list", list);
+		 
+		 return "board/excelJsp";
+		 
+		
+		
+		
+		/*
+		 * List<Map<String, Object>> list = sqlSession.selectList("mapper.excelDown",
+		 * map);
+		 * 
+		 * model.addAttribute("list", list); return "board/excelJsp";
+		 */
 
+	}
 	
 	
 		

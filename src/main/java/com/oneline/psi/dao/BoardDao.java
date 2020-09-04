@@ -21,6 +21,8 @@ public interface BoardDao {
 
 	int totalCount(Map<String, Object> map);
 
+	List<Map<String, Object>> excelDown(Map<String, Object> map);
+
 
 	
 

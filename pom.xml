@@ -38,6 +38,15 @@
 		 </dependency>
 	<!-- /파일업로드를 위한 의존설정 -->    
 	
+	<!-- poi 라이브러리 -->
+	<dependency>
+	    <groupId>org.apache.poi</groupId>
+	    <artifactId>poi-ooxml</artifactId>
+	    <version>4.0.0</version>
+	</dependency>    
+	<!-- /poi 라이브러리 -->
+	
+	
 	<dependency>
 	    <groupId>com.oracle</groupId>
 	    <artifactId>ojdbc6</artifactId>
@@ -179,7 +188,7 @@
 		</dependency>   
 		
 		
-		  <!-- JSON을 사용하기 위한 의존설정 -->
+		<!-- JSON을 사용하기 위한 의존설정 -->
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>

@@ -59,6 +59,12 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSession.selectOne("mapper.total", map);
 	}
 
+	@Override
+	public List<Map<String, Object>> excelDown(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("mapper.excelDown", map);
+	}
+
 	
 
 

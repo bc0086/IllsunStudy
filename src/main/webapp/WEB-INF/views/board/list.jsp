@@ -123,7 +123,9 @@ function goPage(num){
 </head>
 <body>
 <a href="uploadList"><button>업로드리스트</button></a><br /><br />
-<a href = "fileDown?saveName=1599132950304_7eleven.jpg&realName=7eleven.jpg">7eleven.png 다운로드</a>
+<!-- <a href = "fileDown?saveName=1599132950304_7eleven.png&realName=7eleven.png">7eleven.png 다운로드</a> -->
+<a href="excelDown"><button>엑셀 다운로드</button></a>
+
 
 <!-- 업로드 다른방법 : 리스트화면 -->
 <form name = "frm1" id = "frm1" enctype="multipart/form-data" method = "post" action = "fileUpload1">
@@ -169,6 +171,7 @@ function goPage(num){
 	<!-- form으로 감싸면 잘되던 a태그도 안먹힌다. 그럴때는 button타입으로 onclick=location.href를 사용해라. -->
 	<button id="deleteBtn1" name="deleteBtn1">삭제1</button>
 	<button id="deleteBtn2" name="deleteBtn2">삭제2</button><br /><br />
+	<button id="excelDown" name="excelDown" onclick="location.href='excelDown'">삭제2</button><br /><br />
 	
 	<table border="1" style="margin: 10px">
 		<tr>
