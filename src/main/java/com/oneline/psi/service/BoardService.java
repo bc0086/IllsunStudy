@@ -23,6 +23,8 @@ public interface BoardService {
 
 	List<Map<String, Object>> excelDown(Map<String, Object> map);
 
+	List<Map<String, Object>> mipList(Map<String, Object> map);
+
 
 
 

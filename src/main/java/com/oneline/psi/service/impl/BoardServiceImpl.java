@@ -79,6 +79,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 
+	@Override
+	public List<Map<String, Object>> mipList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return boardDao.mipList(map);
+	}
+
+
 
 
 

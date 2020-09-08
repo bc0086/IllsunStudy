@@ -32,6 +32,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.oneline.psi.BoardVO;
 import com.oneline.psi.service.BoardService;
+import com.tobesoft.platform.PlatformRequest;
+import com.tobesoft.platform.PlatformResponse;
+import com.tobesoft.platform.data.ColumnInfo;
+import com.tobesoft.platform.data.Dataset;
+import com.tobesoft.platform.data.DatasetList;
+import com.tobesoft.platform.data.Variable;
+import com.tobesoft.platform.data.VariableList;
 
 @Controller
 public class BoardController {
@@ -441,10 +448,6 @@ public class BoardController {
 		 model.addAttribute("list", list);
 		 
 		 return "board/excelJsp";
-		 
-		
-		
-		
 		/*
 		 * List<Map<String, Object>> list = sqlSession.selectList("mapper.excelDown",
 		 * map);
@@ -452,6 +455,53 @@ public class BoardController {
 		 * model.addAttribute("list", list); return "board/excelJsp";
 		 */
 
+	}
+	
+	// MiPlatform 연동하기
+	@RequestMapping("miConnector")
+	public void miConnector(@RequestParam Map<String, Object> map, HttpServletResponse response) throws IOException {
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		list = boardService.mipList(map);
+		
+		Dataset ds = new Dataset("javaDs");
+		// ds.setid("javaList")랑 같은 의미
+		ds.addColumn("seq", ColumnInfo.COLUMN_TYPE_INT, 100);
+		// ds.addColumn("seq", ColumnInfo.COLUMN_TYPE_INT, 100); 랑 같은 결과
+		ds.addColumn("memId", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("memName", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("boardSubject", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("regDate", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("uptDate", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("viewCnt", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		
+		for(int i=0; i<list.size(); i++) {
+			int row = ds.appendRow();
+			int seq = Integer.parseInt(list.get(i).get("seq").toString());
+				// list.get은 list의 값 즉 map을 의미. 여기서 한번더 get을 하면 map의 값.
+			ds.setColumn(row, "seq", seq);
+				// get으로 꺼내오면 무조건 toString으로 형변환할 것.
+			ds.setColumn(row, "memId", list.get(i).get("memId").toString());
+			ds.setColumn(row, "memName", list.get(i).get("memName").toString());
+			ds.setColumn(row, "boardSubject", list.get(i).get("boardSubject").toString());
+			ds.setColumn(row, "regDate", list.get(i).get("regDate").toString());
+			// ds.setColumn(row, "uptDate", list.get(i).get("uptDate").toString());
+			String uptDate = list.get(i).get("uptDate") == null ? "" : list.get(i).get("uptDate").toString();
+			ds.setColumn(row, "uptDate", uptDate);
+			ds.setColumn(row, "viewCnt", list.get(i).get("viewCnt").toString());
+		}
+		
+		DatasetList dsl = new DatasetList();
+		dsl.add(ds);
+		System.out.println(dsl);
+		
+		VariableList vl = new VariableList();
+		System.out.println(vl);
+		
+		PlatformResponse pRes = new PlatformResponse(response, PlatformRequest.JSP_XML, "UTF-8");
+		pRes.sendData(vl, dsl);
+		
+		System.out.println("연결은 됬다.");	
+			
 	}
 	
 	
