@@ -459,7 +459,68 @@ public class BoardController {
 	
 	// MiPlatform 연동하기
 	@RequestMapping("miConnector")
-	public void miConnector(@RequestParam Map<String, Object> map, HttpServletResponse response) throws IOException {
+	public void miConnector(@RequestParam Map<String, Object> map, HttpServletResponse response, HttpServletRequest request) throws IOException {
+		System.out.println("마이플랫폼");
+		
+		// 검색하기
+		PlatformRequest pReq = new PlatformRequest(request, "UTF-8");
+		pReq.receiveData();
+		
+		DatasetList javaDsl = pReq.getDatasetList();
+		
+		Dataset dSearch = javaDsl.getDataset("javaSearch");
+		System.out.println("dSearch :" + dSearch);
+		
+		String searchType = null;
+		String searchTxt = null;
+		String startDate = null;
+		String endDate = null;
+		
+		
+		for(int i=0; i<dSearch.getRowCount(); i++) { 
+			searchType = dSearch.getColumnAsString(i, "searchType"); 
+			searchTxt = dSearch.getColumnAsString(i, "keyword"); 
+			startDate = dSearch.getColumnAsString(i, "startDate"); 
+			endDate = dSearch.getColumnAsString(i, "endDate"); 
+		}
+		
+		if(searchType.equals("null")){
+			searchType="";
+		}
+		if(searchTxt.equals("null")){
+			searchTxt="";
+		}
+		if(startDate.equals("null")){
+			startDate="";
+		}
+		if(endDate.equals("null")){
+			endDate="";
+		}
+		
+		
+		
+		
+		System.out.println("searchType : " + searchType);
+		System.out.println("searchTxt : " + searchTxt);
+		System.out.println("startDate : " + startDate);
+		System.out.println("endDate : " + endDate);
+		
+		map.put("searchType", searchType);
+		map.put("searchTxt", searchTxt);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		System.out.println("map : " + map);
+		/*
+		 	두번째 방법
+		VariableList javaVl = pReq.getVariableList();
+		
+		String searchTypeVl = javaVl.getValueAsString("searchKey");
+		String searchTxtVl = javaVl.getValueAsString("txt");
+		System.out.println(searchTypeVl);
+		System.out.println(searchTxtVl);
+		*/
+		
+		// 전체리스트
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		list = boardService.mipList(map);
 		

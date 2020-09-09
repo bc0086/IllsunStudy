@@ -210,5 +210,23 @@
 			,upt_date
 			,view_cnt
 		from board_study
+		where 1=1
+		<choose>
+			<when test="searchType == 'name'">
+				and MEM_NAME like '%${searchTxt}%'
+			</when>
+			<when test="searchType == 'subject'">
+				and BOARD_SUBJECT like '%'||#{searchTxt}||'%'
+			</when>
+			<when test="searchType == 'subCon'">
+				and (BOARD_SUBJECT like '%'||#{searchTxt}||'%'
+					or BOARD_CONTENT like '%'||#{searchTxt}||'%')
+			</when>
+			<when test="startDate != null and startDate != ''">
+				and REG_DATE between #{startDate} and #{endDate}
+			</when>
+		</choose>
+		
+		
 	</select>
 </mapper>
