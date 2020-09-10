@@ -226,7 +226,56 @@
 				and REG_DATE between #{startDate} and #{endDate}
 			</when>
 		</choose>
-		
-		
 	</select>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- miP와 testSpring연동 -->
+		<select id="mipGetList" resultMap="mapList" parameterType="map">
+			select
+				seq
+				, mem_id
+				, mem_name
+				, board_subject
+				, board_content
+				, reg_date
+				, upt_date
+				, view_cnt
+			from board_study
+		</select>
+		
+		
+		
+		
+	
 </mapper>

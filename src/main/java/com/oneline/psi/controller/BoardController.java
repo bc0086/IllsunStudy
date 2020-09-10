@@ -495,10 +495,7 @@ public class BoardController {
 		}
 		if(endDate.equals("null")){
 			endDate="";
-		}
-		
-		
-		
+		}		
 		
 		System.out.println("searchType : " + searchType);
 		System.out.println("searchTxt : " + searchTxt);
@@ -564,6 +561,101 @@ public class BoardController {
 		System.out.println("연결은 됬다.");	
 			
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 마이플랫폼 testSpring과의 연결
+	@RequestMapping("mipGetList")
+	public void mipGetList(@RequestParam Map<String, Object> map, HttpServletResponse response) throws IOException {
+		// RequestParam : 단일 파라미터를 전달받을때 사용하는 어노테이션 
+			// map은 model과 달리 내장객체가 아니기 때문에 즉, 외부에서 들어오는 데이터를 저장하기 때문에 RequestParam필요
+		// HttpServletRequest : 웹브라우저가 요청할때 담겨있던 정보를 담기위해 생성된 내장객체.
+		// 즉 얘한테 요청할 때의 정보가 담겨있기 때문에 물어보면 다 알려줌.
+		// HttpServletResponse : 요청을 한 웹브라우저에게 응답을 보낼때 사용하기 위해 생성된 내장객체
+		List<Map<String, Object>> boardList = new ArrayList<Map<String,Object>>();
+		boardList = boardService.mipGetList(map);
+		
+		// 1. 데이터셋을 만들자
+		Dataset ds = new Dataset("javaDs");
+		
+		// 2. 컬럼을 추가하자 (컬럼명, 컬럼타입, 사이즈)
+		ds.addColumn("seq", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("mem_id", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("mem_name", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("board_subject", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("board_content", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("reg_date", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("upt_date", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		ds.addColumn("view_cnt", ColumnInfo.COLUMN_TYPE_STRING, 100);
+		
+		// 3. 컬럼에 데이터를 넣자 (어느행, 어느컬럼명, 어떤데이터)
+			// 행은 boardList의 사이즈만큼 즉 데이터의 줄만큼 반복문 돌려준다.
+			// 컬럼명은 마이플랫폼의 컬럼명
+			// 데이터는 자바단에서 가져온 데이터
+		for(int i=0; i<boardList.size(); i++) {
+			int row = ds.appendRow();
+				// ds.addRow();도 같이 열을 추가하는 메소드이나 자바단에서는 안먹힘.
+			int seq = Integer.parseInt(boardList.get(i).get("seq").toString());
+				// map에서 get으로 꺼내오면 자료형이 object이므로 무조건 toString으로 형변환 할 것.
+			String mem_id = boardList.get(i).get("memId").toString();
+			String mem_name = boardList.get(i).get("memName").toString();
+			String board_subject = boardList.get(i).get("boardSubject").toString();
+			String board_content = boardList.get(i).get("boardContent").toString();
+			String reg_date = boardList.get(i).get("regDate").toString();
+			String upt_date = boardList.get(i).get("uptDate") == null ? "" : boardList.get(i).get("boardContent").toString();
+			String view_cnt = boardList.get(i).get("viewCnt").toString();
+			
+			ds.setColumn(row, "seq", seq);
+			ds.setColumn(row, "mem_id", mem_id);
+			ds.setColumn(row, "mem_name", mem_name);
+			ds.setColumn(row, "board_subject", board_subject);
+			ds.setColumn(row, "board_content", board_content);
+			ds.setColumn(row, "reg_date", reg_date);
+			ds.setColumn(row, "upt_date", upt_date);
+			ds.setColumn(row, "view_cnt", view_cnt);
+		}
+		
+		// 4. 데이터셋 리스트 만들기
+			// 데이터셋리스트, 베리에이블리스트, 플랫폼리스폰스, 센드데이터
+		DatasetList dsl = new DatasetList();
+		dsl.add(ds);
+		System.out.println("dsl: " + dsl);
+		
+		VariableList vl = new VariableList();
+		System.out.println("vl: " + vl);
+		
+		PlatformResponse pRes = new PlatformResponse(response, PlatformRequest.JSP_XML, "utf-8");
+		pRes.sendData(vl, dsl);
+		
+	}
+	
+	
 	
 	
 		

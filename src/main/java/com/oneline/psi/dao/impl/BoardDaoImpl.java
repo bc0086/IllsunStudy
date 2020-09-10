@@ -71,6 +71,12 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSession.selectList("mapper.mipList", map);
 	}
 
+	// miP - testSpring
+	@Override
+	public List<Map<String, Object>> mipGetList(Map<String, Object> map) {
+		return sqlSession.selectList("mapper.mipGetList", map);
+	}
+
 	
 
 

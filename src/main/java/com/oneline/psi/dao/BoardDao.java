@@ -25,6 +25,9 @@ public interface BoardDao {
 
 	List<Map<String, Object>> mipList(Map<String, Object> map);
 
+	// miP - testSpring
+	List<Map<String, Object>> mipGetList(Map<String, Object> map);
+
 
 	
 

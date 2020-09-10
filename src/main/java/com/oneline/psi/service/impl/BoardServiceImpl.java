@@ -85,6 +85,12 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.mipList(map);
 	}
 
+	// miP - testSpring
+	@Override
+	public List<Map<String, Object>> mipGetList(Map<String, Object> map) {
+		return boardDao.mipGetList(map);
+	}
+
 
 	
 
