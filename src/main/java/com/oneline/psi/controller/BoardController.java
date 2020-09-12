@@ -521,7 +521,7 @@ public class BoardController {
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		list = boardService.mipList(map);
 		
-		Dataset ds = new Dataset("javaDs");
+		Dataset ds = new Dataset("javaDs");    
 		// ds.setid("javaList")랑 같은 의미
 		ds.addColumn("seq", ColumnInfo.COLUMN_TYPE_INT, 100);
 		// ds.addColumn("seq", ColumnInfo.COLUMN_TYPE_INT, 100); 랑 같은 결과
